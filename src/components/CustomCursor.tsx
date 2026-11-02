@@ -2,37 +2,15 @@ import { useEffect, useRef } from 'react'
 
 const HOVER_SELECTOR = 'a, button, [role="button"], [data-cursor="hover"]'
 const FIELD_SELECTOR = 'input, textarea, select, [contenteditable="true"]'
-const MAX_LABEL = 22
-
-/** Drops decorative glyphs (arrow spans, icons) before reading a label. */
-function readableText(element: Element) {
-  const clone = element.cloneNode(true) as Element
-  clone.querySelectorAll('[aria-hidden="true"]').forEach((node) => node.remove())
-  return (clone.textContent ?? '').replace(/\s+/g, ' ').trim()
-}
-
-/** Pulls a short, readable label for the cursor bubble. */
-function getLabel(element: Element) {
-  const explicit = element.getAttribute('data-cursor-label')
-  const aria = element.getAttribute('aria-label')
-  const text = element.querySelector('[aria-hidden="true"]')
-    ? readableText(element)
-    : (element.textContent ?? '').replace(/\s+/g, ' ').trim()
-
-  let label = explicit || (text && text.length <= MAX_LABEL ? text : aria) || text || aria || ''
-  if (label.length > MAX_LABEL) label = `${label.slice(0, MAX_LABEL - 1).trimEnd()}…`
-  return label
-}
 
 /**
- * White cursor orb. Shrinks to a dot over empty space and grows into a white
- * disc with the hovered link's label in the middle. Native cursors stay
- * untouched inside form fields.
+ * White cursor orb: a ~10 px dot at rest that grows into a 104 px disc over
+ * any link. The wrapper blends into the page (`mix-blend-mode: difference`),
+ * so the disc inverts whatever sits under it — link text flips to black
+ * inside the circle. Native cursors stay untouched inside form fields.
  */
 export function CustomCursor() {
   const outerRef = useRef<HTMLDivElement>(null)
-  const orbRef = useRef<HTMLDivElement>(null)
-  const labelRef = useRef<HTMLSpanElement>(null)
 
   useEffect(() => {
     if (
@@ -43,9 +21,7 @@ export function CustomCursor() {
     }
 
     const outer = outerRef.current
-    const orb = orbRef.current
-    const label = labelRef.current
-    if (!outer || !orb || !label) return
+    if (!outer) return
 
     const root = document.documentElement
     root.classList.add('cursor-none')
@@ -70,30 +46,11 @@ export function CustomCursor() {
     }
 
     const applyTarget = (target: Element | null) => {
-      if (!target) {
-        outer.classList.remove('is-hovering', 'is-field')
-        label.textContent = ''
-        return
-      }
+      const inField = Boolean(target?.closest(FIELD_SELECTOR))
+      const interactive = target?.closest(HOVER_SELECTOR)
 
-      if (target.closest(FIELD_SELECTOR)) {
-        outer.classList.add('is-field')
-        outer.classList.remove('is-hovering')
-        label.textContent = ''
-        return
-      }
-
-      outer.classList.remove('is-field')
-
-      const interactive = target.closest(HOVER_SELECTOR)
-      if (!interactive) {
-        outer.classList.remove('is-hovering')
-        label.textContent = ''
-        return
-      }
-
-      label.textContent = getLabel(interactive)
-      outer.classList.add('is-hovering')
+      outer.classList.toggle('is-field', inField)
+      outer.classList.toggle('is-hovering', Boolean(interactive) && !inField)
     }
 
     const onOver = (event: PointerEvent) => {
@@ -144,9 +101,7 @@ export function CustomCursor() {
 
   return (
     <div ref={outerRef} className="cursor" aria-hidden="true">
-      <div ref={orbRef} className="cursor__orb">
-        <span ref={labelRef} className="cursor__label" />
-      </div>
+      <div className="cursor__orb" />
     </div>
   )
 }

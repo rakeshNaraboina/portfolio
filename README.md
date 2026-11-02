@@ -11,7 +11,7 @@ The motion and depth layer is ported from [5araang.in](https://www.5araang.in/) 
 | Effect | Where |
 | ------ | ----- |
 | Lenis smooth scroll, synced to GSAP ScrollTrigger | `src/lib/smooth-scroll.ts` |
-| White cursor disc that grows and shows the hovered link's label | `src/components/CustomCursor.tsx` |
+| White cursor dot that inverts into a large disc over links (`mix-blend-mode: difference`) | `src/components/CustomCursor.tsx` |
 | Scroll-scrubbed 3D render: forward + reversed video, velocity-aware | `src/components/CinematicBackground.tsx` |
 | Sliding image stack on phones, reduced motion and data-saver | `src/components/CinematicBackground.tsx` |
 | Holographic 3D tilt card with the "Let's talk" CTA in About | `src/components/ProfileCard.tsx` + `profile-card.css` |

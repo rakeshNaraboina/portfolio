@@ -158,6 +158,9 @@
 
 /* ── Custom white cursor ───────────────────────────────────────────────── */
 
+/* The difference blend has to live on the wrapper: it is position:fixed +
+   z-index, so it forms a stacking context and an inner blend would only see
+   this wrapper's transparent background. Blending here inverts the page. */
 .cursor {
   position: fixed;
   left: 0;
@@ -167,6 +170,7 @@
   height: 0;
   pointer-events: none;
   opacity: 0;
+  mix-blend-mode: difference;
   transition: opacity 0.25s ease;
 }
 
@@ -178,71 +182,30 @@
   opacity: 0;
 }
 
+/* Fixed 104px disc, scaled down to a ~15px dot until a link is hovered. */
 .cursor__orb {
   position: absolute;
   left: 0;
   top: 0;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  width: 12px;
-  height: 12px;
+  width: 88px;
+  height: 88px;
   border-radius: 999px;
   background: #fff;
-  transform: translate(-50%, -50%);
-  box-shadow:
-    0 0 0 1px rgb(255 255 255 / 0.25),
-    0 6px 18px rgb(0 0 0 / 0.45);
-  will-change: width, height, transform;
-  transition:
-    width 0.32s cubic-bezier(0.16, 1, 0.3, 1),
-    height 0.32s cubic-bezier(0.16, 1, 0.3, 1),
-    box-shadow 0.25s ease,
-    background 0.25s ease;
+  transform: translate(-50%, -50%) scale(0.3);
+  will-change: transform;
+  transition: transform 0.34s cubic-bezier(0.16, 1, 0.3, 1);
 }
 
 .cursor.is-hovering .cursor__orb {
-  width: 104px;
-  height: 104px;
-  box-shadow:
-    0 0 0 1px rgb(255 255 255 / 0.55),
-    0 18px 48px rgb(0 0 0 / 0.55),
-    0 0 60px rgb(255 255 255 / 0.12);
+  transform: translate(-50%, -50%) scale(1);
 }
 
 .cursor.is-pressed .cursor__orb {
-  width: 11px;
-  height: 11px;
+  transform: translate(-50%, -50%) scale(0.11);
 }
 
 .cursor.is-hovering.is-pressed .cursor__orb {
-  width: 92px;
-  height: 92px;
-}
-
-.cursor__label {
-  max-width: 78px;
-  overflow: hidden;
-  color: #07070a;
-  font-family: var(--font-mono);
-  font-size: 10px;
-  font-weight: 500;
-  line-height: 1.2;
-  letter-spacing: 0.08em;
-  text-align: center;
-  text-transform: uppercase;
-  overflow-wrap: anywhere;
-  opacity: 0;
-  transform: scale(0.86);
-  transition:
-    opacity 0.16s ease,
-    transform 0.24s cubic-bezier(0.16, 1, 0.3, 1);
-}
-
-.cursor.is-hovering .cursor__label {
-  opacity: 1;
-  transform: scale(1);
-  transition-delay: 0.06s;
+  transform: translate(-50%, -50%) scale(0.9);
 }
 
 /* Native cursor is only hidden while the orb is active, and never in fields. */

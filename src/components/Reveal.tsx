@@ -1,4 +1,4 @@
-import { motion } from 'framer-motion'
+import { motion, useReducedMotion } from 'framer-motion'
 import type { ReactNode } from 'react'
 import { easing } from '../lib/motion'
 
@@ -10,6 +10,12 @@ type RevealProps = {
 }
 
 export function Reveal({ children, className, delay = 0, y = 26 }: RevealProps) {
+  const reduceMotion = useReducedMotion()
+
+  if (reduceMotion) {
+    return <div className={className}>{children}</div>
+  }
+
   return (
     <motion.div
       className={className}

@@ -5,7 +5,7 @@ import { SectionHeading } from './SectionHeading'
 
 export function ExperienceSection() {
   return (
-    <section id="experience" className="section border-y border-line/60 bg-surface/40">
+    <section id="experience" className="section border-y border-line/40">
       <div className="shell">
         <SectionHeading
           kicker="Where I've worked"

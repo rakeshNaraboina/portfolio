@@ -29,17 +29,34 @@ export function Navbar() {
       .map((link) => document.getElementById(link.href.slice(1)))
       .filter((el): el is HTMLElement => Boolean(el))
 
-    const observer = new IntersectionObserver(
-      (entries) => {
-        entries.forEach((entry) => {
-          if (entry.isIntersecting) setActive(`#${entry.target.id}`)
-        })
-      },
-      { rootMargin: '-45% 0px -50% 0px' },
-    )
+    if (sections.length === 0) return
 
-    sections.forEach((section) => observer.observe(section))
-    return () => observer.disconnect()
+    let frame = 0
+
+    const update = () => {
+      frame = 0
+      const marker = window.innerHeight * 0.45
+      const current = sections.find((section) => {
+        const rect = section.getBoundingClientRect()
+        return rect.top <= marker && rect.bottom >= marker
+      })
+      setActive(current ? `#${current.id}` : '')
+    }
+
+    const onScroll = () => {
+      if (frame) return
+      frame = requestAnimationFrame(update)
+    }
+
+    update()
+    window.addEventListener('scroll', onScroll, { passive: true })
+    window.addEventListener('resize', onScroll, { passive: true })
+
+    return () => {
+      cancelAnimationFrame(frame)
+      window.removeEventListener('scroll', onScroll)
+      window.removeEventListener('resize', onScroll)
+    }
   }, [])
 
   return (

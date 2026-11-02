@@ -6,7 +6,7 @@ import { GithubIcon } from './icons'
 
 export function Projects() {
   return (
-    <section id="projects" className="section border-y border-line/60 bg-surface/40">
+    <section id="projects" className="section border-y border-line/40">
       <div className="shell">
         <SectionHeading
           kicker="Explore my creations"

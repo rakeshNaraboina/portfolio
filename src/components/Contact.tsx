@@ -44,7 +44,7 @@ export function Contact() {
   return (
     <section id="contact" className="section">
       <div className="shell">
-        <div className="relative overflow-hidden rounded-3xl border border-line bg-surface">
+        <div className="relative overflow-hidden rounded-3xl border border-line bg-surface/85 backdrop-blur-xl">
           <div
             aria-hidden="true"
             className="pointer-events-none absolute -top-32 left-1/4 h-64 w-96 rounded-full bg-accent/10 blur-[110px]"
@@ -63,6 +63,7 @@ export function Contact() {
               <div className="mt-9 space-y-3">
                 <a
                   href={`mailto:${profile.email}`}
+                  data-cursor-label="Email"
                   className="group flex items-center gap-4 rounded-xl border border-line bg-ink/60 p-4 transition-colors hover:border-accent/50"
                 >
                   <span className="flex h-10 w-10 shrink-0 items-center justify-center rounded-lg border border-accent/25 bg-accent/10 text-accent">
@@ -82,6 +83,7 @@ export function Contact() {
                   href={profile.linkedin}
                   target="_blank"
                   rel="noreferrer"
+                  data-cursor-label="LinkedIn"
                   className="group flex items-center gap-4 rounded-xl border border-line bg-ink/60 p-4 transition-colors hover:border-accent/50"
                 >
                   <span className="flex h-10 w-10 shrink-0 items-center justify-center rounded-lg border border-line bg-elevated text-zinc-300">
@@ -102,6 +104,7 @@ export function Contact() {
                     href={profile.github}
                     target="_blank"
                     rel="noreferrer"
+                    data-cursor-label="GitHub"
                     className="group flex items-center gap-4 rounded-xl border border-line bg-ink/60 p-4 transition-colors hover:border-accent/50"
                   >
                     <span className="flex h-10 w-10 shrink-0 items-center justify-center rounded-lg border border-line bg-elevated text-zinc-300">

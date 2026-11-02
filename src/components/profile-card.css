@@ -1,0 +1,250 @@
+/* ── Holographic profile card ─────────────────────────────────────────── */
+
+.pc-wrap {
+  --pointer-x: 50%;
+  --pointer-y: 50%;
+  --pointer-from-center: 0;
+  --pointer-from-top: 0.5;
+  --pointer-from-left: 0.5;
+  --card-opacity: 0;
+  --rotate-x: 0deg;
+  --rotate-y: 0deg;
+  --background-x: 50%;
+  --background-y: 50%;
+
+  --behind-glow-color: rgba(255, 122, 26, 0.5);
+
+  --sunpillar-1: hsl(18 100% 62%);
+  --sunpillar-2: hsl(43 100% 64%);
+  --sunpillar-3: hsl(150 100% 62%);
+  --sunpillar-4: hsl(190 100% 64%);
+  --sunpillar-5: hsl(255 100% 72%);
+  --sunpillar-6: hsl(305 100% 70%);
+
+  position: relative;
+  width: 100%;
+  max-width: 368px;
+  perspective: 820px;
+}
+
+/* Fills its grid column (used by the About portrait). */
+.pc-wrap--fluid {
+  max-width: 100%;
+}
+
+/* Never swallow touch scrolling — the card is reachable on phones. */
+@media (pointer: fine) {
+  .pc-wrap {
+    touch-action: none;
+  }
+}
+
+.pc-behind {
+  position: absolute;
+  inset: -14%;
+  z-index: 0;
+  pointer-events: none;
+  border-radius: 999px;
+  background: radial-gradient(
+    circle at var(--pointer-x) var(--pointer-y),
+    var(--behind-glow-color) 0%,
+    transparent 58%
+  );
+  filter: blur(46px);
+  opacity: calc(var(--card-opacity) * 0.9);
+  transition: opacity 0.5s ease;
+}
+
+.pc-shell {
+  position: relative;
+  z-index: 1;
+  transform-style: preserve-3d;
+  transform: rotateX(var(--rotate-x)) rotateY(var(--rotate-y)) translateZ(0);
+  will-change: transform;
+}
+
+.pc-inner {
+  position: relative;
+  overflow: hidden;
+  border-radius: 28px;
+  border: 1px solid rgb(255 255 255 / 0.14);
+  background: #0a0a0f;
+  box-shadow:
+    0 50px 90px -50px rgb(0 0 0 / 0.95),
+    0 0 0 1px rgb(255 255 255 / 0.03) inset;
+  transform-style: preserve-3d;
+}
+
+.pc-avatar {
+  display: block;
+  width: 100%;
+  aspect-ratio: 4 / 5;
+  object-fit: cover;
+  object-position: 52% 22%;
+  transform: translate3d(
+      calc((var(--pointer-from-left) - 0.5) * -16px),
+      calc((var(--pointer-from-top) - 0.5) * -16px),
+      0
+    )
+    scale(1.07);
+  transition: filter 0.5s ease;
+  filter: saturate(0.85) contrast(1.04);
+  user-select: none;
+}
+
+.pc-wrap.is-active .pc-avatar {
+  filter: saturate(1) contrast(1.06);
+}
+
+.pc-scrim {
+  position: absolute;
+  inset: 0;
+  background:
+    linear-gradient(to top, rgb(5 5 8 / 0.96) 0%, rgb(5 5 8 / 0.55) 30%, transparent 62%),
+    linear-gradient(to bottom, rgb(5 5 8 / 0.55), transparent 26%);
+  pointer-events: none;
+}
+
+/* iridescent foil */
+.pc-shine {
+  position: absolute;
+  inset: 0;
+  pointer-events: none;
+  background-image:
+    repeating-linear-gradient(
+      112deg,
+      var(--sunpillar-1) 0%,
+      var(--sunpillar-2) 9%,
+      var(--sunpillar-3) 18%,
+      var(--sunpillar-4) 27%,
+      var(--sunpillar-5) 36%,
+      var(--sunpillar-6) 45%,
+      transparent 54%
+    ),
+    radial-gradient(ellipse at var(--pointer-x) var(--pointer-y), rgb(255 255 255 / 0.5), transparent 55%);
+  background-size: 240% 240%, 100% 100%;
+  background-position: var(--background-x) var(--background-y), center;
+  mix-blend-mode: color-dodge;
+  opacity: calc(0.05 + var(--pointer-from-center) * 0.14);
+  transition: opacity 0.35s ease;
+}
+
+.pc-wrap.is-active .pc-shine {
+  opacity: calc(0.08 + var(--pointer-from-center) * 0.18);
+}
+
+.pc-glare {
+  position: absolute;
+  inset: 0;
+  pointer-events: none;
+  background: radial-gradient(
+    circle at var(--pointer-x) var(--pointer-y),
+    rgb(255 255 255 / 0.45) 0%,
+    rgb(255 255 255 / 0.08) 22%,
+    transparent 46%
+  );
+  mix-blend-mode: soft-light;
+  opacity: calc(0.1 + var(--pointer-from-center) * 0.3);
+}
+
+.pc-hud {
+  position: absolute;
+  inset: 0;
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+  padding: 18px;
+  pointer-events: none;
+}
+
+.pc-status {
+  align-self: flex-start;
+  display: inline-flex;
+  align-items: center;
+  gap: 7px;
+  border-radius: 999px;
+  border: 1px solid rgb(255 255 255 / 0.16);
+  background: rgb(0 0 0 / 0.4);
+  padding: 6px 11px;
+  font-family: var(--font-mono);
+  font-size: 10px;
+  letter-spacing: 0.14em;
+  text-transform: uppercase;
+  color: #e8e8ef;
+  backdrop-filter: blur(8px);
+}
+
+.pc-dot {
+  width: 6px;
+  height: 6px;
+  border-radius: 999px;
+  background: #34d399;
+  box-shadow: 0 0 10px rgb(52 211 153 / 0.9);
+}
+
+.pc-foot {
+  display: flex;
+  align-items: flex-end;
+  justify-content: space-between;
+  gap: 12px;
+}
+
+.pc-name {
+  font-family: var(--font-display);
+  font-size: 1.05rem;
+  font-weight: 600;
+  letter-spacing: -0.01em;
+  color: #fff;
+  line-height: 1.2;
+}
+
+.pc-title {
+  margin-top: 3px;
+  font-size: 11px;
+  line-height: 1.4;
+  color: rgb(255 255 255 / 0.6);
+}
+
+.pc-handle {
+  margin-top: 6px;
+  font-family: var(--font-mono);
+  font-size: 10px;
+  letter-spacing: 0.12em;
+  text-transform: uppercase;
+  color: rgb(255 160 77 / 0.85);
+}
+
+.pc-cta {
+  pointer-events: auto;
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  flex-shrink: 0;
+  border-radius: 999px;
+  background: var(--color-accent);
+  color: #07070a;
+  padding: 10px 16px;
+  font-size: 12px;
+  font-weight: 600;
+  transition: background 0.2s ease, transform 0.2s ease;
+}
+
+.pc-cta:hover {
+  background: var(--color-accent-soft);
+  transform: translateY(-1px);
+}
+
+.pc-cta span {
+  font-size: 13px;
+  line-height: 1;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .pc-shell {
+    transform: none !important;
+  }
+
+  .pc-avatar {
+    transform: scale(1.02);
+  }
+}

@@ -14,42 +14,19 @@ const item = {
   visible: { opacity: 1, y: 0, transition: { duration: 0.7, ease: easing } },
 }
 
-const words = ['Learning.', 'Building.', 'Improving.']
-
 export function Hero() {
   return (
-    <section id="top" className="relative flex min-h-[100svh] items-center overflow-hidden pb-20 pt-32">
+    <section id="top" className="relative flex min-h-[100svh] items-center overflow-hidden pb-20 pt-28">
       <div aria-hidden="true" className="pointer-events-none absolute inset-0 -z-10">
-        <div className="bg-grid mask-fade-b absolute inset-0 opacity-60" />
-        <div className="absolute -top-44 left-1/2 h-[540px] w-[min(900px,95vw)] -translate-x-1/2 rounded-full bg-accent/10 blur-[140px]" />
-        <div className="absolute bottom-0 right-0 h-[340px] w-[340px] rounded-full bg-accent/5 blur-[110px]" />
-      </div>
-
-      <div
-        aria-hidden="true"
-        className="pointer-events-none absolute right-6 top-1/2 hidden -translate-y-1/2 select-none flex-col items-end gap-1 xl:flex"
-      >
-        {words.map((word, index) => (
-          <span
-            key={word}
-            className={`font-display text-7xl font-bold leading-[0.95] tracking-tighter ${
-              index === 2 ? 'text-outline' : 'text-white/[0.045]'
-            }`}
-          >
-            {word}
-          </span>
-        ))}
+        <div className="bg-grid mask-fade-b absolute inset-0 opacity-20" />
+        <div className="absolute -top-44 left-1/3 h-[540px] w-[min(900px,92vw)] -translate-x-1/2 rounded-full bg-accent/10 blur-[150px]" />
+        <div className="absolute bottom-10 right-0 h-[340px] w-[340px] rounded-full bg-accent/[0.06] blur-[120px]" />
       </div>
 
       <div className="shell relative">
-        <motion.div
-          variants={container}
-          initial="hidden"
-          animate="visible"
-          className="max-w-4xl"
-        >
+        <motion.div variants={container} initial="hidden" animate="visible" className="max-w-2xl">
           <motion.div variants={item} className="flex flex-wrap items-center gap-x-4 gap-y-3">
-            <span className="inline-flex items-center gap-2 rounded-full border border-line bg-surface/80 px-3.5 py-1.5 font-mono text-[11px] uppercase tracking-[0.16em] text-zinc-300 backdrop-blur">
+            <span className="inline-flex items-center gap-2 rounded-full border border-line bg-surface/70 px-3.5 py-1.5 font-mono text-[11px] uppercase tracking-[0.16em] text-zinc-300 backdrop-blur">
               <span className="relative flex h-1.5 w-1.5">
                 <span className="absolute inline-flex h-full w-full animate-ping rounded-full bg-emerald-400 opacity-75" />
                 <span className="relative inline-flex h-1.5 w-1.5 rounded-full bg-emerald-400" />
@@ -61,11 +38,14 @@ export function Hero() {
             </span>
           </motion.div>
 
-          <h1 className="mt-8 font-display text-[clamp(2.6rem,7vw,5.25rem)] font-semibold leading-[0.98] tracking-[-0.045em]">
+          <h1 className="mt-8 font-display text-[clamp(2.05rem,5.8vw,4.4rem)] font-semibold leading-[0.98] tracking-[-0.045em]">
             <motion.span variants={item} className="block">
               {profile.headline.lead}
             </motion.span>
-            <motion.span variants={item} className="block text-accent">
+            <motion.span
+              variants={item}
+              className="block font-serif text-[1.06em] font-normal italic tracking-[-0.02em] text-accent"
+            >
               {profile.headline.accent}
             </motion.span>
             <motion.span variants={item} className="block">
@@ -73,7 +53,10 @@ export function Hero() {
             </motion.span>
           </h1>
 
-          <motion.p variants={item} className="mt-8 max-w-2xl text-base leading-relaxed text-zinc-400 sm:text-lg">
+          <motion.p
+            variants={item}
+            className="mt-8 max-w-xl text-base leading-relaxed text-zinc-400 sm:text-lg"
+          >
             {profile.intro}
           </motion.p>
 

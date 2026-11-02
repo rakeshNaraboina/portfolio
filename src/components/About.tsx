@@ -1,48 +1,37 @@
 import { GraduationCap, MapPin } from 'lucide-react'
 import { about, profile } from '../data/portfolio'
+import { BlurText } from './BlurText'
+import { ProfileCard } from './ProfileCard'
 import { Reveal } from './Reveal'
 import { SectionHeading } from './SectionHeading'
 
 export function About() {
   return (
-    <section id="about" className="section">
+    <section id="about" className="section overflow-x-clip">
       <div className="shell">
         <SectionHeading kicker="Get to know me" title="About Me" />
 
         <div className="mt-14 grid items-start gap-12 lg:grid-cols-12 lg:gap-16">
           <Reveal className="lg:col-span-5" y={32}>
-            <div className="relative">
-              <div
-                aria-hidden="true"
-                className="absolute -inset-2.5 rounded-[1.85rem] border border-line/80 sm:-inset-3"
-              />
-              <div className="relative overflow-hidden rounded-3xl border border-line bg-elevated">
-                <img
-                  src={profile.photo}
-                  alt={`${profile.name} — ${profile.role}`}
-                  loading="lazy"
-                  className="aspect-[4/5] w-full scale-[1.02] object-cover object-[52%_18%] grayscale-[12%] transition-all duration-700 ease-out hover:scale-105 hover:grayscale-0"
-                />
-                <div
-                  aria-hidden="true"
-                  className="absolute inset-x-0 bottom-0 h-2/5 bg-gradient-to-t from-black/85 via-black/30 to-transparent"
-                />
-                <div className="absolute inset-x-4 bottom-4 flex items-center justify-between gap-3 rounded-xl border border-white/10 bg-black/40 px-4 py-3 backdrop-blur-md">
-                  <div>
-                    <p className="font-display text-sm font-semibold text-white">{profile.name}</p>
-                    <p className="text-xs text-zinc-400">{profile.shortRole}</p>
-                  </div>
-                  <span className="flex h-2 w-2 shrink-0 rounded-full bg-emerald-400 shadow-[0_0_10px_rgba(52,211,153,0.8)]" />
-                </div>
-              </div>
-            </div>
+            <ProfileCard
+              imageUrl={profile.photo}
+              name={profile.name}
+              title={profile.shortRole}
+              handle={profile.location}
+              status={profile.availability}
+              contactText="Let's talk"
+              contactHref="#contact"
+              className="pc-wrap--fluid"
+            />
           </Reveal>
 
           <div className="lg:col-span-7">
             <Reveal delay={0.05}>
               <div className="space-y-5 text-base leading-relaxed text-zinc-400">
                 {about.paragraphs.map((paragraph) => (
-                  <p key={paragraph.slice(0, 24)}>{paragraph}</p>
+                  <p key={paragraph.slice(0, 24)}>
+                    <BlurText text={paragraph} delay={0.012} />
+                  </p>
                 ))}
               </div>
             </Reveal>
